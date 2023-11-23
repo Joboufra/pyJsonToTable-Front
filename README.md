@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+---
+runme:
+  id: 01HFYM71TK90JQFS1KFXYY0WFK
+  version: v2.0
+---
 
-## Getting Started
+# JsonToTable
 
-First, run the development server:
+## Introducción
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+JsonToTable es una aplicación web diseñada para transformar datos JSON en representaciones visuales interactivas, tanto en formato de tabla como en estructuras de árbol. La herramienta está diseñada para facilitar la visualización y manipulación de datos estructurados, permitiendo a los usuarios comprender mejor la jerarquía y la composición de sus datos JSON.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+![image](https://github.com/Joboufra/pyJsonToTable-Front/assets/46650791/31062157-c4a0-4cf4-8b7b-ce9bdc4f22e4)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Tecnologías Utilizadas
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Frontend:**
+  - [Next.js](https://nextjs.org/): Un framework de React que proporciona funcionalidades como renderizado del lado del servidor y generación de sitios estáticos.
+  - [React](https://reactjs.org/): Una biblioteca de JavaScript para construir interfaces de usuario.
+  - [Tailwind CSS](https://tailwindcss.com/): Un framework de CSS para el diseño rápido y responsivo de aplicaciones web.
+- **Backend:**
+  - [Python](https://www.python.org/): Un lenguaje de programación de alto nivel utilizado para el procesamiento de datos del lado del servidor.
+  - [FastAPI](https://fastapi.tiangolo.com/): Un moderno y rápido (de alto rendimiento) framework web para construir APIs con Python 3.7+, basado en estándares como JSON Schema, OAuth 2.0, y OpenAPI.
 
-## Learn More
+## Características
 
-To learn more about Next.js, take a look at the following resources:
+- **Conversión de JSON a Tabla:** Visualiza cualquier estructura JSON como una tabla HTML.
+- **Búsqueda y Filtrado:** Funciones de búsqueda para filtrar rápidamente a través de la representación tabular de los datos.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Notas adicionales
+Este es un proyecto en continuo desarrollo, por lo que habrá características que se añadan y modifiquen en un futuro.
