@@ -25,3 +25,8 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+html, body {
+  background: radial-gradient(circle, #172233, rgba(0, 0, 0, 0.8));
+  font-family: 'sans', sans-serif;
+}
