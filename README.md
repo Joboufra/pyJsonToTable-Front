@@ -1,9 +1,3 @@
----
-runme:
-  id: 01HFYM71TK90JQFS1KFXYY0WFK
-  version: v2.0
----
-
 # JsonToTable
 
 ## Introducción
