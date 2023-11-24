@@ -82,7 +82,6 @@ export default function Home() {
     return tempDiv.innerHTML;
   };
 
-  // Función para manejar la búsqueda y filtrar la tabla
   const handleSearch = (searchTerm) => {
     searchTerm = searchTerm.trim();
   
@@ -109,12 +108,22 @@ export default function Home() {
     setFilteredTableHtml(tempDiv.innerHTML);
     setShowNoResultsMessage(visibleRows === 0);
   };
-  
+
+  const handleClearData = () => {
+    setJsonInput('');
+    setTableHtml('');
+
+  };
 
   return (
     <div className="flex flex-col h-screen">
       <header className={`h-16 ${isModalOpen ? 'filter blur-sm' : ''}`}>
-        <NavBar showSearch={!!tableHtml} onSearch={handleSearch} />
+        <NavBar 
+          showSearch={!!tableHtml}
+          onSearch={handleSearch}
+          showClearButton={!!tableHtml}
+          onClearData={handleClearData}
+        />
       </header>
       <div className={`flex flex-row flex-grow overflow-hidden ${isModalOpen ? 'filter blur-sm' : ''}`}>
         <div className="w-1/6">

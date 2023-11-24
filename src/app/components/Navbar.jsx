@@ -1,8 +1,10 @@
+// NavBar.js
 import Image from 'next/image';
 import Link from 'next/link';
 import Search from './Search';
 
-const NavBar = ({ showSearch, onSearch }) => {
+
+const NavBar = ({ showSearch, onSearch, showClearButton, onClearData }) => {
   return (
     <nav className="sticky top-0 left-0 w-full bg-[#121212] h-16 flex justify-between items-center px-4 border-b-2 border-secondary-500">
       <Link href="/" passHref>
@@ -23,16 +25,15 @@ const NavBar = ({ showSearch, onSearch }) => {
         </div>
       )}
 
-      {/* Ejemplo de otros elementos del NavBar a la derecha */}
-      <div className='menu flex'>
-        <ul className='flex items-center space-x-5'>
-          <li>
-            <Link href="/" className="text-white font-medium uppercase">
-              Tabla de datos
-            </Link>
-          </li>
-        </ul>
-      </div>
+      {/* Botón para limpiar datos, visible solo si hay datos cargados */}
+      {showClearButton && (
+        <button
+          className="bg-red-700 hover:bg-red-600 text-slate-100 font-semibold p-2 w-44 rounded flex items-center justify-center gap-2"
+          onClick={onClearData}
+        >
+          Limpiar datos
+        </button>
+      )}
     </nav>
   );
 };
