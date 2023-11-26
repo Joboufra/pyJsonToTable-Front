@@ -3,7 +3,7 @@ import { useState } from 'react';
 import JsonInput from './components/jsonInput';
 import HtmlTable from './components/htmlTable'; 
 import Modal from './components/modal'; 
-import NavBar from './components/NavBar';
+import NavBar from './components/Navbar';
 import Welcome from './components/Welcome';
 
 export default function Home() {
