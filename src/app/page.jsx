@@ -1,5 +1,6 @@
 "use client"
 import { useState } from 'react';
+import Head from 'next/head';
 import JsonInput from './components/jsonInput';
 import HtmlTable from './components/htmlTable'; 
 import Modal from './components/modal'; 
@@ -116,6 +117,10 @@ export default function Home() {
 
   return (
     <div className="flex flex-col h-screen">
+      <title>JsonToTable</title>
+        <meta name="description" content="Transforma tus JSON a representaciones interactivas en formato tabla" />
+        <meta property="og:title" content="JsonToTable | jsontotable.joboufra.es" />
+        <link rel="canonical" href="https://jsontotable.joboufra.es/" />
       <header className={`h-16 ${isModalOpen ? 'filter blur-sm' : ''}`}>
         <NavBar 
           showSearch={!!tableHtml}
