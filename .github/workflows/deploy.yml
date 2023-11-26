@@ -32,8 +32,8 @@ jobs:
     - name: Hacer build
       run: npm run build --if-present
       env:
-        API_ENDPOINT: ${{ secrets.API_ENDPOINT }}
-        API_KEY: ${{ secrets.API_KEY }}
+        NEXT_PUBLIC_API_ENDPOINT: ${{ secrets.NEXT_PUBLIC_API_ENDPOINT }}
+        NEXT_PUBLIC_API_KEY: ${{ secrets.NEXT_PUBLIC_API_KEY }}
   Deploy:
     runs-on: self-hosted
     needs: Build
