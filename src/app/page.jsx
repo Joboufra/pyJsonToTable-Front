@@ -37,7 +37,7 @@ export default function Home() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'access_token': process.env.NEXT_PUBLIC_API_KEY,
+          'Authorization': process.env.NEXT_PUBLIC_API_KEY,
         },
         body: JSON.stringify({ data: parsedJson }),
       });
