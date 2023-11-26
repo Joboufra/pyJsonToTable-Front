@@ -31,14 +31,13 @@ export default function Home() {
       showModal('Advertencia', 'No se ha proporcionado ningún JSON');
       return;
     }
-  
     try {
       const parsedJson = JSON.parse(jsonInput);
-      const response = await fetch(process.env.API_ENDPOINT, {
+      const response = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'access_token': process.env.API_KEY,
+          'access_token': process.env.NEXT_PUBLIC_API_KEY,
         },
         body: JSON.stringify({ data: parsedJson }),
       });
