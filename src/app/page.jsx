@@ -34,11 +34,11 @@ export default function Home() {
   
     try {
       const parsedJson = JSON.parse(jsonInput);
-      const response = await fetch('http://127.0.0.1:8000/pyJson2table/', {
+      const response = await fetch(process.env.API_ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'access_token': 'asd123',
+          'access_token': process.env.API_KEY,
         },
         body: JSON.stringify({ data: parsedJson }),
       });
