@@ -38,4 +38,4 @@ jobs:
 
     steps:
     - name: Volver a desplegar
-      run: pm2 reload 0
+      run: pm2 reload 1
