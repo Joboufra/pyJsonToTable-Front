@@ -3,7 +3,7 @@ import { useState } from 'react';
 import JsonInput from './components/jsonInput';
 import HtmlTable from './components/htmlTable'; 
 import Modal from './components/modal'; 
-import NavBar from './components/NavBar';
+import NavBar from './components/Navbar';
 import Welcome from './components/Welcome';
 
 export default function Home() {
@@ -31,14 +31,13 @@ export default function Home() {
       showModal('Advertencia', 'No se ha proporcionado ningún JSON');
       return;
     }
-  
     try {
       const parsedJson = JSON.parse(jsonInput);
-      const response = await fetch('http://127.0.0.1:8000/pyJson2table/', {
+      const response = await fetch(process.env.NEXT_PUBLIC_API_ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'access_token': 'asd123',
+          'Authorization': process.env.NEXT_PUBLIC_API_KEY,
         },
         body: JSON.stringify({ data: parsedJson }),
       });
@@ -82,7 +81,6 @@ export default function Home() {
     return tempDiv.innerHTML;
   };
 
-  // Función para manejar la búsqueda y filtrar la tabla
   const handleSearch = (searchTerm) => {
     searchTerm = searchTerm.trim();
   
@@ -109,12 +107,22 @@ export default function Home() {
     setFilteredTableHtml(tempDiv.innerHTML);
     setShowNoResultsMessage(visibleRows === 0);
   };
-  
+
+  const handleClearData = () => {
+    setJsonInput('');
+    setTableHtml('');
+
+  };
 
   return (
     <div className="flex flex-col h-screen">
       <header className={`h-16 ${isModalOpen ? 'filter blur-sm' : ''}`}>
-        <NavBar showSearch={!!tableHtml} onSearch={handleSearch} />
+        <NavBar 
+          showSearch={!!tableHtml}
+          onSearch={handleSearch}
+          showClearButton={!!tableHtml}
+          onClearData={handleClearData}
+        />
       </header>
       <div className={`flex flex-row flex-grow overflow-hidden ${isModalOpen ? 'filter blur-sm' : ''}`}>
         <div className="w-1/6">
