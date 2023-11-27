@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Search from './Search';
 
 
-const NavBar = ({ showSearch, onSearch, showClearButton, onClearData }) => {
+const NavBar = ({ showSearch, onSearch, showClearButton, onClearData, onOpenAboutModal }) => {
   return (
     <nav className="sticky top-0 left-0 w-full bg-[#121212] h-16 flex justify-between items-center px-4 border-b-2 border-secondary-500">
       <Link href="/" passHref>
@@ -24,7 +24,13 @@ const NavBar = ({ showSearch, onSearch, showClearButton, onClearData }) => {
           <Search onSearch={onSearch} />
         </div>
       )}
-
+      {/* Botón para abrir el modal 'About' */}
+      <button
+        onClick={onOpenAboutModal}
+        className="text-white hover:text-teal-400 bg-transparent font-xs py-1 px-4 rounded"
+      >
+        Sobre la app
+      </button>
       {/* Botón para limpiar datos, visible solo si hay datos cargados */}
       {showClearButton && (
         <button
