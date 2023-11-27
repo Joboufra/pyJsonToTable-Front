@@ -1,5 +1,6 @@
 "use client"
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import JsonInput from './components/jsonInput';
 import HtmlTable from './components/htmlTable'; 
 import Modal from './components/modal'; 
@@ -11,6 +12,7 @@ export default function Home() {
   const [tableHtml, setTableHtml] = useState('');
   const [filteredTableHtml, setFilteredTableHtml] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
   const [modalContent, setModalContent] = useState('');
   const [showNoResultsMessage, setShowNoResultsMessage] = useState(false);
@@ -21,7 +23,6 @@ export default function Home() {
     setIsModalOpen(true);
   };
   
-  // Ejemplo de uso para un error de JSON
   const handleJsonError = (error) => {
     showModal('Error de análisis', 'El JSON no es válido');
   };
@@ -45,7 +46,6 @@ export default function Home() {
       if (!response.ok) {
         throw new Error(`Error HTTP: ${response.status}`);
       }
-  
       const jsonResponse = await response.json();
       const styledTableHtml = addStylesToTable(jsonResponse.html);
       console.log(jsonResponse);
@@ -111,29 +111,44 @@ export default function Home() {
   const handleClearData = () => {
     setJsonInput('');
     setTableHtml('');
+  };
 
+  const handleOpenAboutModal = () => {
+    setIsAboutModalOpen(true);
   };
 
   return (
     <div className="flex flex-col h-screen">
+      <title>JsonToTable</title>
+        <meta name="description" content="Transforma tus JSON a representaciones interactivas en formato tabla" />
+        <meta property="og:title" content="JsonToTable | jsontotable.joboufra.es" />
+        <link rel="canonical" href="https://jsontotable.joboufra.es/" />
       <header className={`h-16 ${isModalOpen ? 'filter blur-sm' : ''}`}>
         <NavBar 
           showSearch={!!tableHtml}
           onSearch={handleSearch}
           showClearButton={!!tableHtml}
           onClearData={handleClearData}
+          onOpenAboutModal={handleOpenAboutModal}
         />
       </header>
-      <div className={`flex flex-row flex-grow overflow-hidden ${isModalOpen ? 'filter blur-sm' : ''}`}>
-        <div className="w-1/6">
-          <JsonInput
-            jsonInput={jsonInput}
-            setJsonInput={setJsonInput}
-            handleSubmit={handleSubmit}
-            isModalOpen={isModalOpen}
-          />
-        </div>
-        <div className="w-5/6">
+    <div className={`flex flex-col md:flex-row md:flex-grow md:overflow-hidden ${isModalOpen || isAboutModalOpen ? 'filter blur-sm' : ''}`}>
+      <div className="md:w-1/6 w-full">
+        <JsonInput
+          jsonInput={jsonInput}
+          setJsonInput={setJsonInput}
+          handleSubmit={handleSubmit}
+          isModalOpen={isModalOpen}
+          onOpenAboutModal={handleOpenAboutModal}
+        />
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.2 }}
+        className="w-full md:w-5/6"
+      >
         {!tableHtml ? (
           <Welcome />
         ) : showNoResultsMessage ? (
@@ -141,10 +156,17 @@ export default function Home() {
             <p className="text-lg text-slate-400">No se encontraron resultados para tu búsqueda.</p>
           </div>
         ) : (
-          <HtmlTable tableHtml={filteredTableHtml || tableHtml} />
+          <motion.div
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.2 }}
+            className="h-full w-full"
+          >
+            <HtmlTable tableHtml={filteredTableHtml || tableHtml} />
+          </motion.div>
         )}
-      </div>
-      </div>
+      </motion.div>
+    </div>
       {isModalOpen && (
         <Modal
           isOpen={isModalOpen}
@@ -153,6 +175,20 @@ export default function Home() {
           content={modalContent}
         />
       )}
+      {isAboutModalOpen && (
+        <Modal
+          isOpen={isAboutModalOpen}
+          isModalOpen={isModalOpen}
+          onClose={() => setIsAboutModalOpen(false)}
+          
+          title="JsonToTable - v1.1.0 | Jose Boullosa"
+          content={
+            <>
+              <p>Todo el código de este proyecto se puede consultar en mi repositorio de <a className='text-teal-500 font-bold' target="_blank" href='https://github.com/Joboufra/pyJsonToTable-Front'>GitHub</a></p>
+            </>
+          }
+        />
+      )}
     </div>
-  );  
+  ); 
 }
