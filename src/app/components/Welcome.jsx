@@ -2,7 +2,7 @@
 import Image from "next/image";
 function Welcome() {
   return (
-    <div className="flex flex-col justify-center items-center h-full mt-36 md:mt-0 md:h-screen p-6 font-sans">
+    <div className="flex flex-col justify-center items-center h-full mt-32 md:mt-0 md:h-screen p-6 font-sans">
       <h2 className="flex flex-row items-center text-2xl font-bold text-white mb-4 uppercase gap-2">
         <Image 
             src="/logo.webp"

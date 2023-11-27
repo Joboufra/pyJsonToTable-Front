@@ -1,6 +1,7 @@
 // components/JsonInput.js
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
+
 export default function JsonInput({ jsonInput, setJsonInput, handleSubmit, isModalOpen }) {
   return (
     <div className="flex flex-col h-30 md:h-screen bg-slate-400/10 p-4 gap-5 overflow-hidden">
@@ -12,11 +13,10 @@ export default function JsonInput({ jsonInput, setJsonInput, handleSubmit, isMod
       >
       </textarea>
       <button
-        className="bg-teal-600 hover:bg-teal-700 text-slate-100 font-bold p-4 rounded-xl flex items-center justify-center gap-2"
+        className="bg-teal-600 hover:bg-teal-700 text-slate-100 font-bold py-2 md:py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-sm l:text-base"
         onClick={handleSubmit}
       >
-        Procesar JSON <FontAwesomeIcon icon={faPlay} className="w-5 h-5"/>
-
+        Procesar JSON <FontAwesomeIcon icon={faPlay} className="w-5 h-5 md:w-5 md:h-5"/>
       </button>
     </div>
   );
