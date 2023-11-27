@@ -10,7 +10,7 @@ export default function Search({ onSearch }) {
       <input
         type="text"
         className="p-2 md:w-96 w-40 border border-slate-500 bg-slate-800 text-slate-300 text-center rounded"
-        placeholder="Buscar en la tabla..."
+        placeholder="Buscar en la tabla"
         onKeyDown={handleKeyDown}
       />
     </div>
