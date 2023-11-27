@@ -12,7 +12,7 @@ function Welcome() {
           />
           JSON to Table
           </h2>
-      <p className="text-xl text-gray-400">Introduce tus datos y dale al botón de &apos;Procesar JSON&apos; para que podamos comenzar.</p>
+        <p className="text-xl text-gray-400 text-center">Introduce tus datos y dale al botón de &apos;Procesar JSON&apos; para que podamos comenzar.</p>
     </div>
   );
 }

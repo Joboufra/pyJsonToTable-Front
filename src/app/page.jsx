@@ -7,7 +7,6 @@ import Modal from './components/modal';
 import NavBar from './components/Navbar';
 import Welcome from './components/Welcome';
 
-
 export default function Home() {
   const [jsonInput, setJsonInput] = useState('');
   const [tableHtml, setTableHtml] = useState('');
@@ -133,29 +132,31 @@ export default function Home() {
           onOpenAboutModal={handleOpenAboutModal}
         />
       </header>
-      <div className={`flex flex-row flex-grow overflow-hidden ${isModalOpen ? 'filter blur-sm' : ''} ${isAboutModalOpen ? 'filter blur-sm' : ''}`}>
-        <div className="w-1/6">
-          <JsonInput
-            jsonInput={jsonInput}
-            setJsonInput={setJsonInput}
-            handleSubmit={handleSubmit}
-            isModalOpen={isModalOpen}
-            onOpenAboutModal={handleOpenAboutModal}
-          />
-        </div>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
-          className="w-5/6">
-          {!tableHtml ? (
-            <Welcome />
-          ) : showNoResultsMessage ? (
-            <div className="flex justify-center items-center h-full">
-              <p className="text-lg text-slate-400">No se encontraron resultados para tu búsqueda.</p>
-            </div>
-          ) : (
-            <motion.div
+    <div className={`flex flex-col md:flex-row md:flex-grow md:overflow-hidden ${isModalOpen || isAboutModalOpen ? 'filter blur-sm' : ''}`}>
+      <div className="md:w-1/6 w-full">
+        <JsonInput
+          jsonInput={jsonInput}
+          setJsonInput={setJsonInput}
+          handleSubmit={handleSubmit}
+          isModalOpen={isModalOpen}
+          onOpenAboutModal={handleOpenAboutModal}
+        />
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.2 }}
+        className="w-full md:w-5/6"
+      >
+        {!tableHtml ? (
+          <Welcome />
+        ) : showNoResultsMessage ? (
+          <div className="flex justify-center items-center h-full">
+            <p className="text-lg text-slate-400">No se encontraron resultados para tu búsqueda.</p>
+          </div>
+        ) : (
+          <motion.div
             initial={{ opacity: 0, x: -100 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.2 }}
@@ -163,9 +164,9 @@ export default function Home() {
           >
             <HtmlTable tableHtml={filteredTableHtml || tableHtml} />
           </motion.div>
-          )}
-        </motion.div>
-      </div>
+        )}
+      </motion.div>
+    </div>
       {isModalOpen && (
         <Modal
           isOpen={isModalOpen}
