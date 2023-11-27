@@ -1,11 +1,11 @@
 "use client"
 import { useState } from 'react';
-import Head from 'next/head';
 import JsonInput from './components/jsonInput';
 import HtmlTable from './components/htmlTable'; 
 import Modal from './components/modal'; 
 import NavBar from './components/Navbar';
 import Welcome from './components/Welcome';
+import { motion } from 'framer-motion';
 
 export default function Home() {
   const [jsonInput, setJsonInput] = useState('');
@@ -22,7 +22,6 @@ export default function Home() {
     setIsModalOpen(true);
   };
   
-  // Ejemplo de uso para un error de JSON
   const handleJsonError = (error) => {
     showModal('Error de análisis', 'El JSON no es válido');
   };
@@ -46,7 +45,6 @@ export default function Home() {
       if (!response.ok) {
         throw new Error(`Error HTTP: ${response.status}`);
       }
-  
       const jsonResponse = await response.json();
       const styledTableHtml = addStylesToTable(jsonResponse.html);
       console.log(jsonResponse);
@@ -112,7 +110,6 @@ export default function Home() {
   const handleClearData = () => {
     setJsonInput('');
     setTableHtml('');
-
   };
 
   return (
@@ -138,17 +135,28 @@ export default function Home() {
             isModalOpen={isModalOpen}
           />
         </div>
-        <div className="w-5/6">
-        {!tableHtml ? (
-          <Welcome />
-        ) : showNoResultsMessage ? (
-          <div className="flex justify-center items-center h-full">
-            <p className="text-lg text-slate-400">No se encontraron resultados para tu búsqueda.</p>
-          </div>
-        ) : (
-          <HtmlTable tableHtml={filteredTableHtml || tableHtml} />
-        )}
-      </div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+          className="w-5/6">
+          {!tableHtml ? (
+            <Welcome />
+          ) : showNoResultsMessage ? (
+            <div className="flex justify-center items-center h-full">
+              <p className="text-lg text-slate-400">No se encontraron resultados para tu búsqueda.</p>
+            </div>
+          ) : (
+            <motion.div
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.2 }}
+            className="h-full w-full"
+          >
+            <HtmlTable tableHtml={filteredTableHtml || tableHtml} />
+          </motion.div>
+          )}
+        </motion.div>
       </div>
       {isModalOpen && (
         <Modal
@@ -159,5 +167,5 @@ export default function Home() {
         />
       )}
     </div>
-  );  
+  ); 
 }

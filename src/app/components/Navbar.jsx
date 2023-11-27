@@ -10,10 +10,10 @@ const NavBar = ({ showSearch, onSearch, showClearButton, onClearData }) => {
       <Link href="/" passHref>
         <div className="flex items-center uppercase font-bold">
           <Image 
-            src="/jsonToTable.webp"
+            src="/logo.webp"
             alt="Logo" 
-            width={50}
-            height={20}
+            width={48}
+            height={48}
           />JSON to Table
         </div>
       </Link>

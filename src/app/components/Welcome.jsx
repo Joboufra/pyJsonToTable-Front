@@ -3,12 +3,12 @@ import Image from "next/image";
 function Welcome() {
   return (
     <div className="flex flex-col items-center justify-center h-full p-6 rounded-lg shadow-lg backdrop-blur-md font-sans">
-      <h2 className="flex flex-row items-center text-2xl font-bold text-white mb-4 uppercase">
+      <h2 className="flex flex-row items-center text-2xl font-bold text-white mb-4 uppercase gap-2">
         <Image 
-            src="/jsonToTable.webp"
+            src="/logo.webp"
             alt="Logo" 
-            width={50}
-            height={20}
+            width={48}
+            height={48}
           />
           JSON to Table
           </h2>
