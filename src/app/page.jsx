@@ -277,14 +277,14 @@ const handleExport = (format) => {
         />
       )}
       {isExportModalOpen && (
-      <Modal
-        isOpen={isExportModalOpen}
-        isModalOpen={isModalOpen}
-        onClose={() => setIsExportModalOpen(false)}
-        title="Exportar Datos"
-        content="Selecciona el formato de archivo para exportar:"
-        children={exportOptions}
-      />
+          <Modal
+          isOpen={isExportModalOpen}
+          onClose={() => setIsExportModalOpen(false)}
+          title="Exportar Datos"
+          content={<div>Selecciona el formato de archivo para exportar:</div>}
+        >
+          {exportOptions}
+        </Modal>
       )}
     </div>
   );
