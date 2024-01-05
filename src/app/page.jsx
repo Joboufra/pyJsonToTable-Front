@@ -23,12 +23,10 @@ export default function Home() {
 
   useEffect(() => {
     const extractColumnNames = () => {
-      console.log("Iniciando extracción de nombres de columnas del HTML de la tabla");
       const tempDiv = document.createElement('div');
       tempDiv.innerHTML = tableHtml;
       const headers = tempDiv.querySelectorAll('table tr th');
       const columnNames = Array.from(headers).map(header => header.textContent.trim());
-      console.log("Nombres de columnas extraídos:", columnNames);
       return columnNames;
     };
 
@@ -98,8 +96,7 @@ const handleExport = (format) => {
   }
 
   setIsExportModalOpen(false);
-};
-
+}; 
 
   const handleJsonError = (error) => {
     showModal('Error de análisis', 'El JSON no es válido');
