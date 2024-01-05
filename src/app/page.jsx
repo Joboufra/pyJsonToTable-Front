@@ -6,6 +6,7 @@ import HtmlTable from './components/htmlTable';
 import Modal from './components/modal'; 
 import NavBar from './components/Navbar';
 import Welcome from './components/Welcome';
+import * as XLSX from 'xlsx';
 
 export default function Home() {
   const [jsonInput, setJsonInput] = useState('');
@@ -13,10 +14,12 @@ export default function Home() {
   const [filteredTableHtml, setFilteredTableHtml] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
   const [modalContent, setModalContent] = useState('');
   const [showNoResultsMessage, setShowNoResultsMessage] = useState(false);
   const [tableColumns, setTableColumns] = useState([]);
+ 
 
   useEffect(() => {
     const extractColumnNames = () => {
@@ -41,6 +44,63 @@ export default function Home() {
     setIsModalOpen(true);
   };
   
+  const handleOpenExportModal = () => {
+    setIsExportModalOpen(true);
+  };
+
+  const exportOptions = (
+    <p className="flex justify-between flex-row mb-5">
+      <button onClick={() => handleExport('csv')} className="py-2 px-4 bg-cyan-700 text-white rounded hover:bg-cyan-800">Exportar como CSV</button>
+      <button onClick={() => handleExport('excel')} className="py-2 px-4 bg-green-700 text-white rounded hover:bg-green-800" >Exportar como Excel</button>
+    </p>
+  );
+
+  function convertTableHtmlToData(html) {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    const rows = tempDiv.querySelectorAll('table tr');
+    
+    const data = Array.from(rows).slice(1).map(row => {
+      return Array.from(row.cells).map(cell => cell.textContent.trim());
+    });
+  
+    return data;
+  }
+
+  function exportToCsv(data, filename = 'JsonToTable.csv') {
+    const csvContent = "data:text/csv;charset=utf-8," 
+      + data.map(row => row.join(",")).join("\n");
+  
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', filename);
+    document.body.appendChild(link); // Necesario para FF
+    link.click();
+    document.body.removeChild(link);
+  }
+  
+  function exportToExcel(data, filename = 'JsonToTable.xlsx') {
+    const worksheet = XLSX.utils.aoa_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "JsonToTable - Joboufra");
+    
+    XLSX.writeFile(workbook, filename);
+  }
+
+const handleExport = (format) => {
+  const data = convertTableHtmlToData(tableHtml);
+
+  if (format === 'csv') {
+    exportToCsv(data);
+  } else if (format === 'excel') {
+    exportToExcel(data);
+  }
+
+  setIsExportModalOpen(false);
+};
+
+
   const handleJsonError = (error) => {
     showModal('Error de análisis', 'El JSON no es válido');
   };
@@ -136,8 +196,6 @@ export default function Home() {
     setShowNoResultsMessage(visibleRows === 0);
   };
   
-  
-  
   const handleClearData = () => {
     setJsonInput('');
     setTableHtml('');
@@ -154,16 +212,17 @@ export default function Home() {
         <meta property="og:title" content="JsonToTable | jsontotable.joboufra.es" />
         <link rel="canonical" href="https://jsontotable.joboufra.es/" />
       <header className={`h-16 ${isModalOpen ? 'filter blur-sm' : ''}`}>
-        <NavBar 
+        <NavBar
           showSearch={!!tableHtml}
           onSearch={handleSearch}
           showClearButton={!!tableHtml}
           onClearData={handleClearData}
           onOpenAboutModal={handleOpenAboutModal}
+          onExport={handleOpenExportModal}
           columns={tableColumns}
         />
       </header>
-    <div className={`flex flex-col md:flex-row md:flex-grow md:overflow-hidden ${isModalOpen || isAboutModalOpen ? 'filter blur-sm' : ''}`}>
+    <div className={`flex flex-col md:flex-row md:flex-grow md:overflow-hidden ${isModalOpen || isAboutModalOpen || isExportModalOpen ? 'filter blur-sm' : ''}`}>
       <div className="md:w-1/6 w-full">
         <JsonInput
           jsonInput={jsonInput}
@@ -220,6 +279,16 @@ export default function Home() {
           }
         />
       )}
+      {isExportModalOpen && (
+      <Modal
+        isOpen={isExportModalOpen}
+        isModalOpen={isModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+        title="Exportar Datos"
+        content="Selecciona el formato de archivo para exportar:"
+        children={exportOptions}
+      />
+      )}
     </div>
-  ); 
+  );
 }
