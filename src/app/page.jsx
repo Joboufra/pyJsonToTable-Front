@@ -268,7 +268,7 @@ const handleExport = (format) => {
           isModalOpen={isModalOpen}
           onClose={() => setIsAboutModalOpen(false)}
           
-          title="JsonToTable - v1.1.0 | Jose Boullosa"
+          title="JsonToTable - v1.2.0 | Jose Boullosa"
           content={
             <>
               <p>Todo el código de este proyecto se puede consultar en mi repositorio de <a className='text-teal-500 font-bold' target="_blank" href='https://github.com/Joboufra/pyJsonToTable-Front'>GitHub</a></p>
