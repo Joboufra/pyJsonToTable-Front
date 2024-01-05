@@ -22,7 +22,7 @@ export default function Search({ onSearch, columns = [] }) {
       >
         <option
           className="border border-slate-500 bg-slate-800 text-slate-300"
-          value="all">Todas las columnas</option>
+          value="">Seleccionar columna</option>
           {columns && columns.map((column, index) => (
             <option key={index} value={column}>
               {column}
