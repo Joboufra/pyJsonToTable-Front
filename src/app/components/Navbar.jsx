@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Search from './Search';
 
-const NavBar = ({ showSearch, onSearch, showClearButton, onClearData, onOpenAboutModal }) => {
+const NavBar = ({ showSearch, onSearch, showClearButton, onClearData, onOpenAboutModal, columns }) => {
   return (
     <nav className="sticky top-0 left-0 w-full bg-[#121212] h-16 flex justify-between items-center px-4 border-b-2 border-secondary-500">
         <div className="flex items-center uppercase font-bold">
@@ -16,7 +16,7 @@ const NavBar = ({ showSearch, onSearch, showClearButton, onClearData, onOpenAbou
       {/* Buscador */}
       {showSearch && (
         <div className="flex-grow flex justify-center items-center">
-          <Search onSearch={onSearch} />
+          <Search onSearch={onSearch} columns={columns} />
         </div>
       )}
       {/* Botón de modal 'Sobre la app' */}

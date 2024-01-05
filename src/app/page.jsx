@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import JsonInput from './components/jsonInput';
 import HtmlTable from './components/htmlTable'; 
@@ -16,7 +16,25 @@ export default function Home() {
   const [modalTitle, setModalTitle] = useState('');
   const [modalContent, setModalContent] = useState('');
   const [showNoResultsMessage, setShowNoResultsMessage] = useState(false);
-  
+  const [tableColumns, setTableColumns] = useState([]);
+
+  useEffect(() => {
+    const extractColumnNames = () => {
+      console.log("Iniciando extracción de nombres de columnas del HTML de la tabla");
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = tableHtml;
+      const headers = tempDiv.querySelectorAll('table tr th');
+      const columnNames = Array.from(headers).map(header => header.textContent.trim());
+      console.log("Nombres de columnas extraídos:", columnNames);
+      return columnNames;
+    };
+
+    if (tableHtml) {
+      console.log("tableHtml actualizado, extrayendo nombres de columna...");
+      setTableColumns(extractColumnNames());
+    }
+  }, [tableHtml]);
+
   const showModal = (title, content) => {
     setModalTitle(title);
     setModalContent(content);
@@ -81,7 +99,7 @@ export default function Home() {
     return tempDiv.innerHTML;
   };
 
-  const handleSearch = (searchTerm) => {
+  const handleSearch = (searchTerm, selectedColumns) => {
     searchTerm = searchTerm.trim();
   
     if (!searchTerm) {
@@ -95,19 +113,31 @@ export default function Home() {
     const rows = tempDiv.querySelectorAll('table tr');
     let visibleRows = 0;
   
-    rows.forEach(row => {
-      const hasTd = row.querySelector('td');
-      if (hasTd) {
-        const isMatch = Array.from(row.cells).some(cell => cell.textContent.includes(searchTerm));
+    rows.forEach((row, rowIndex) => {
+      if (rowIndex === 0) return; 
+      const cells = row.querySelectorAll('td');
+      if (cells.length > 0) {
+        const headerCells = row.parentNode.rows[0].cells;
+        const isMatch = Array.from(cells).some((cell, index) => {
+          if (index >= headerCells.length) {
+            return false;
+          }
+          const columnName = headerCells[index].textContent.trim();
+          const cellMatch = selectedColumns.includes(columnName) && cell.textContent.includes(searchTerm);
+          return cellMatch;
+        });
         row.style.display = isMatch ? '' : 'none';
         if (isMatch) visibleRows++;
       }
     });
   
+    console.log("Filas que coinciden con la búsqueda:", visibleRows);
     setFilteredTableHtml(tempDiv.innerHTML);
     setShowNoResultsMessage(visibleRows === 0);
   };
-
+  
+  
+  
   const handleClearData = () => {
     setJsonInput('');
     setTableHtml('');
@@ -130,6 +160,7 @@ export default function Home() {
           showClearButton={!!tableHtml}
           onClearData={handleClearData}
           onOpenAboutModal={handleOpenAboutModal}
+          columns={tableColumns}
         />
       </header>
     <div className={`flex flex-col md:flex-row md:flex-grow md:overflow-hidden ${isModalOpen || isAboutModalOpen ? 'filter blur-sm' : ''}`}>
