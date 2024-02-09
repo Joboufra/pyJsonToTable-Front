@@ -370,7 +370,7 @@ export default function JsonInput({ jsonInput, setJsonInput, handleSubmit, isMod
 
   useEffect(() => {
     const fillJsonShortcut = (e) => {
-      if (e.ctrlKey && e.shiftKey && e.code === 'KeyJ') {
+      if (e.ctrlKey && e.shiftKey && e.code === 'KeyS') {
         e.preventDefault();
         setJsonInput(JSON.stringify(jsonTest, null, 2));
       }
