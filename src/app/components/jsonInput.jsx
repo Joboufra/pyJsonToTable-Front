@@ -386,7 +386,7 @@ export default function JsonInput({ jsonInput, setJsonInput, handleSubmit, isMod
   return (
     <div className="flex flex-col h-30 md:h-screen bg-slate-400/10 p-4 gap-5 overflow-hidden">
       <textarea
-        className="md:h-5/6 h-1/6 bg-white/10 border border-gray-500 p-2 resize-none scrollbar scrollbar-thumb-teal-700 scrollbar-track-slate-700"
+        className="md:h-5/6 h-1/6 bg-white/10 border text-slate-100 border-gray-500 p-2 resize-none scrollbar scrollbar-thumb-teal-700 scrollbar-track-slate-700"
         value={jsonInput}
         onChange={(e) => setJsonInput(e.target.value)}
         placeholder="Introduce tu JSON aquí"

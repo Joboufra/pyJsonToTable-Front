@@ -11,11 +11,11 @@ const NavBar = ({ showSearch, onSearch, showClearButton, onClearData, onOpenAbou
             alt="Logo" 
             width={48}
             height={48}
-          /><p className='hidden md:inline'>JSON to Table</p>
+          /><p className='hidden md:inline text-slate-100'>JSON to Table</p>
         </div>
       {/* Buscador */}
       {showSearch && (
-        <div className="flex-grow flex justify-center items-center">
+        <div className="flex-grow flex justify-center items-center text-slate-100">
           <Search onSearch={onSearch} columns={columns} />
         </div>
       )}
@@ -28,7 +28,6 @@ const NavBar = ({ showSearch, onSearch, showClearButton, onClearData, onOpenAbou
       </button>
 
        {/* Botón para exportar datos */}
-          
           {showClearButton && (
             <button
               onClick={onExport}
