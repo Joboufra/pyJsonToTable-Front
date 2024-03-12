@@ -389,7 +389,7 @@ export default function JsonInput({ jsonInput, setJsonInput, handleSubmit, isMod
         className="md:h-5/6 h-1/6 bg-white/10 border text-slate-100 border-gray-500 p-2 resize-none scrollbar scrollbar-thumb-teal-700 scrollbar-track-slate-700"
         value={jsonInput}
         onChange={(e) => setJsonInput(e.target.value)}
-        placeholder="Introduce tu JSON aquí"
+        placeholder="Introduce tu JSON aquí."
       >
       </textarea>
       <button
@@ -398,6 +398,8 @@ export default function JsonInput({ jsonInput, setJsonInput, handleSubmit, isMod
       >
         Procesar JSON <FontAwesomeIcon icon={faPlay} className="w-5 h-5 md:w-5 md:h-5"/>
       </button>
+      
     </div>
+    
   );
 }

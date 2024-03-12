@@ -19,7 +19,6 @@ export default function Home() {
   const [modalContent, setModalContent] = useState('');
   const [showNoResultsMessage, setShowNoResultsMessage] = useState(false);
   const [tableColumns, setTableColumns] = useState([]);
- 
 
   useEffect(() => {
     const extractColumnNames = () => {
@@ -31,7 +30,7 @@ export default function Home() {
     };
 
     if (tableHtml) {
-      console.log("tableHtml actualizado, extrayendo nombres de columna...");
+      console.log("Tabla actualizada, se modifican los filtros.");
       setTableColumns(extractColumnNames());
     }
   }, [tableHtml]);
@@ -86,20 +85,20 @@ export default function Home() {
     XLSX.writeFile(workbook, filename);
   }
 
-const handleExport = (format) => {
-  const data = convertTableHtmlToData(tableHtml);
+  const handleExport = (format) => {
+    const data = convertTableHtmlToData(tableHtml);
 
-  if (format === 'csv') {
-    exportToCsv(data);
-  } else if (format === 'excel') {
-    exportToExcel(data);
-  }
+    if (format === 'csv') {
+      exportToCsv(data);
+    } else if (format === 'excel') {
+      exportToExcel(data);
+    }
 
-  setIsExportModalOpen(false);
-}; 
+    setIsExportModalOpen(false);
+  }; 
 
   const handleJsonError = (error) => {
-    showModal('Error de análisis', 'El JSON no es válido');
+    showModal('Error de análisis', 'El JSON proporcionado no es válido');
   };
   
   const handleSubmit = async () => {
@@ -123,8 +122,8 @@ const handleExport = (format) => {
       }
       const jsonResponse = await response.json();
       const styledTableHtml = addStylesToTable(jsonResponse.html);
-      console.log(jsonResponse);
-      setTableHtml(styledTableHtml); 
+      setTableHtml(styledTableHtml);
+      setFilteredTableHtml(styledTableHtml);
     } catch (error) {
       console.error('Error en la solicitud o en el análisis del JSON');
       handleJsonError(error);
@@ -158,7 +157,7 @@ const handleExport = (format) => {
 
   const handleSearch = (searchTerm, selectedColumns) => {
     searchTerm = searchTerm.trim();
-  
+
     if (!searchTerm) {
       setFilteredTableHtml(tableHtml);
       setShowNoResultsMessage(false);
@@ -240,7 +239,7 @@ const handleExport = (format) => {
           <Welcome />
         ) : showNoResultsMessage ? (
           <div className="flex justify-center items-center h-full">
-            <p className="text-lg text-slate-400">No se encontraron resultados para tu búsqueda.</p>
+            <p className="text-lg text-slate-400">No se encontraron resultados para tu búsqueda</p>
           </div>
         ) : (
           <motion.div
@@ -268,7 +267,7 @@ const handleExport = (format) => {
           isModalOpen={isModalOpen}
           onClose={() => setIsAboutModalOpen(false)}
           
-          title="JsonToTable - v1.3.0 | Jose Boullosa"
+          title="JsonToTable - v1.4.1 | Jose Boullosa"
           content={
             <>
               <p>Todo el código de este proyecto se puede consultar en mi repositorio de <a className='text-teal-500 font-bold' target="_blank" href='https://github.com/Joboufra/pyJsonToTable-Front'>GitHub</a></p>
