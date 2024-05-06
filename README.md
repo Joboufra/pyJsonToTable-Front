@@ -11,11 +11,9 @@ JsonToTable es una aplicación web diseñada para transformar datos JSON en repr
 
 - **Frontend:**
   - [Next.js](https://nextjs.org/): Un framework de React que proporciona funcionalidades como renderizado del lado del servidor y generación de sitios estáticos.
-  - [React](https://reactjs.org/): Una biblioteca de JavaScript para construir interfaces de usuario.
   - [Tailwind CSS](https://tailwindcss.com/): Un framework de CSS para el diseño rápido y responsivo de aplicaciones web.
 - **Backend:**
-  - [Python](https://www.python.org/): Un lenguaje de programación de alto nivel utilizado para el procesamiento de datos del lado del servidor.
-  - [FastAPI](https://fastapi.tiangolo.com/): Un moderno y rápido (de alto rendimiento) framework web para construir APIs con Python 3.7+, basado en estándares como JSON Schema, OAuth 2.0, y OpenAPI.
+  - [FastAPI](https://fastapi.tiangolo.com/): FastAPI es un web framework moderno y rápido (de alto rendimiento) para construir APIs con Python basado en las anotaciones de tipos estándar de Python, con compatibilidad con estándares de hoy como OAuth 2.0, y OpenAPI.
 
 ## Características
 
