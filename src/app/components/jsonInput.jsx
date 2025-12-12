@@ -1,405 +1,62 @@
-// components/JsonInput.js
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlay } from '@fortawesome/free-solid-svg-icons';
 
-export default function JsonInput({ jsonInput, setJsonInput, handleSubmit, isModalOpen }) {
+export default function JsonInput({ jsonInput, setJsonInput, handleSubmit }) {
+  const sampleJson = [
+    { titulo: 'Libro 1', autor: 'Autor A', genero: 'Ficcion', paginas: 280, editorial: 'Editora Norte', precio: 24.9 },
+    { titulo: 'Libro 2', autor: 'Autor B', genero: 'Tecnologia', paginas: 240, editorial: 'Tech House', precio: 18.5 },
+    { titulo: 'Libro 3', autor: 'Autor C', genero: 'Historia', paginas: 310, editorial: 'Memoria Press', precio: 22.0 },
+    { titulo: 'Libro 4', autor: 'Autor D', genero: 'Cocina', paginas: 180, editorial: 'Sabor Editores', precio: 15.75 },
+    { titulo: 'Libro 5', autor: 'Autor E', genero: 'Ciencia', paginas: 340, editorial: 'Astro Books', precio: 29.1 },
+    { titulo: 'Libro 6', autor: 'Autor F', genero: 'Misterio', paginas: 260, editorial: 'Noir Co', precio: 19.9 },
+    { titulo: 'Libro 7', autor: 'Autor G', genero: 'Ficcion', paginas: 295, editorial: 'Editora Norte', precio: 23.4 },
+    { titulo: 'Libro 8', autor: 'Autor H', genero: 'Infantil', paginas: 150, editorial: 'Pequenio Sol', precio: 12.5 },
+    { titulo: 'Libro 9', autor: 'Autor I', genero: 'Aventura', paginas: 370, editorial: 'Ruta Editorial', precio: 27.8 },
+    { titulo: 'Libro 10', autor: 'Autor J', genero: 'Romance', paginas: 220, editorial: 'Amor&Co', precio: 17.6 },
+    { titulo: 'Libro 11', autor: 'Autor K', genero: 'Ensayo', paginas: 200, editorial: 'Punto Critico', precio: 16.2 },
+    { titulo: 'Libro 12', autor: 'Autor L', genero: 'Fantasia', paginas: 410, editorial: 'Dragon Press', precio: 31.5 },
+    { titulo: 'Libro 13', autor: 'Autor M', genero: 'Viajes', paginas: 190, editorial: 'Mapa Abierto', precio: 14.9 },
+    { titulo: 'Libro 14', autor: 'Autor N', genero: 'Biografia', paginas: 330, editorial: 'Vidas', precio: 25.3 },
+    { titulo: 'Libro 15', autor: 'Autor O', genero: 'Tecnologia', paginas: 280, editorial: 'Tech House', precio: 21.0 },
+  ];
 
-  const jsonTest = [
-      {
-          "Titulo": "Libro 1",
-          "Autor": "Autor 1",
-          "Genero": "Ficción",
-          "AñoPublicacion": 2020,
-          "Editorial": "Editorial 1",
-          "ISBN": "978-1234567890",
-          "Paginas": 300,
-          "Idioma": "Español",
-          "Formato": "Tapa dura",
-          "Precio": 25.99
-      },
-      {
-          "Titulo": "Libro 2",
-          "Autor": "Autor 2",
-          "Genero": "No Ficción",
-          "AñoPublicacion": 2019,
-          "Editorial": "Editorial 2",
-          "ISBN": "978-0987654321",
-          "Paginas": 250,
-          "Idioma": "Inglés",
-          "Formato": "Tapa blanda",
-          "Precio": 19.99
-      },
-      {
-          "Titulo": "Libro 3",
-          "Autor": "Autor 3",
-          "Genero": "Ciencia Ficción",
-          "AñoPublicacion": 2021,
-          "Editorial": "Editorial 3",
-          "ISBN": "978-9876543210",
-          "Paginas": 400,
-          "Idioma": "Español",
-          "Formato": "Tapa dura",
-          "Precio": 29.99
-      },
-      {
-          "Titulo": "Libro 4",
-          "Autor": "Autor 4",
-          "Genero": "Misterio",
-          "AñoPublicacion": 2018,
-          "Editorial": "Editorial 4",
-          "ISBN": "978-5678901234",
-          "Paginas": 320,
-          "Idioma": "Inglés",
-          "Formato": "Tapa blanda",
-          "Precio": 22.50
-      },
-      {
-          "Titulo": "Libro 5",
-          "Autor": "Autor 5",
-          "Genero": "Fantasía",
-          "AñoPublicacion": 2017,
-          "Editorial": "Editorial 5",
-          "ISBN": "978-5432109876",
-          "Paginas": 350,
-          "Idioma": "Español",
-          "Formato": "Tapa dura",
-          "Precio": 27.99
-      },
-      {
-          "Titulo": "Libro 6",
-          "Autor": "Autor 6",
-          "Genero": "Historia",
-          "AñoPublicacion": 2016,
-          "Editorial": "Editorial 6",
-          "ISBN": "978-6789012345",
-          "Paginas": 280,
-          "Idioma": "Español",
-          "Formato": "Tapa blanda",
-          "Precio": 18.75
-      },
-      {
-          "Titulo": "Libro 7",
-          "Autor": "Autor 7",
-          "Genero": "Aventura",
-          "AñoPublicacion": 2019,
-          "Editorial": "Editorial 7",
-          "ISBN": "978-4321098765",
-          "Paginas": 310,
-          "Idioma": "Inglés",
-          "Formato": "Tapa dura",
-          "Precio": 24.99
-      },
-      {
-          "Titulo": "Libro 8",
-          "Autor": "Autor 8",
-          "Genero": "Romance",
-          "AñoPublicacion": 2022,
-          "Editorial": "Editorial 8",
-          "ISBN": "978-8765432109",
-          "Paginas": 260,
-          "Idioma": "Español",
-          "Formato": "Tapa blanda",
-          "Precio": 21.50
-      },
-      {
-          "Titulo": "Libro 9",
-          "Autor": "Autor 9",
-          "Genero": "Ciencia",
-          "AñoPublicacion": 2020,
-          "Editorial": "Editorial 9",
-          "ISBN": "978-3210987654",
-          "Paginas": 380,
-          "Idioma": "Inglés",
-          "Formato": "Tapa dura",
-          "Precio": 28.75
-      },
-      {
-          "Titulo": "Libro 10",
-          "Autor": "Autor 10",
-          "Genero": "Ficción",
-          "AñoPublicacion": 2015,
-          "Editorial": "Editorial 10",
-          "ISBN": "978-1098765432",
-          "Paginas": 270,
-          "Idioma": "Español",
-          "Formato": "Tapa blanda",
-          "Precio": 20.99
-      },
-      {
-          "Titulo": "Libro 11",
-          "Autor": "Autor 11",
-          "Genero": "Misterio",
-          "AñoPublicacion": 2017,
-          "Editorial": "Editorial 11",
-          "ISBN": "978-2345678901",
-          "Paginas": 330,
-          "Idioma": "Inglés",
-          "Formato": "Tapa dura",
-          "Precio": 23.50
-      },
-      {
-          "Titulo": "Libro 12",
-          "Autor": "Autor 12",
-          "Genero": "Fantasía",
-          "AñoPublicacion": 2021,
-          "Editorial": "Editorial 12",
-          "ISBN": "978-7654321098",
-          "Paginas": 310,
-          "Idioma": "Español",
-          "Formato": "Tapa blanda",
-          "Precio": 22.99
-      },
-      {
-          "Titulo": "Libro 13",
-          "Autor": "Autor 13",
-          "Genero": "Historia",
-          "AñoPublicacion": 2018,
-          "Editorial": "Editorial 13",
-          "ISBN": "978-3456789012",
-          "Paginas": 290,
-          "Idioma": "Inglés",
-          "Formato": "Tapa dura",
-          "Precio": 26.75
-      },
-      {
-          "Titulo": "Libro 14",
-          "Autor": "Autor 14",
-          "Genero": "Aventura",
-          "AñoPublicacion": 2023,
-          "Editorial": "Editorial 14",
-          "ISBN": "978-4567890123",
-          "Paginas": 340,
-          "Idioma": "Español",
-          "Formato": "Tapa blanda",
-          "Precio": 24.50
-      },
-      {
-          "Titulo": "Libro 15",
-          "Autor": "Autor 15",
-          "Genero": "Romance",
-          "AñoPublicacion": 2019,
-          "Editorial": "Editorial 15",
-          "ISBN": "978-5678901234",
-          "Paginas": 320,
-          "Idioma": "Inglés",
-          "Formato": "Tapa dura",
-          "Precio": 21.99
-      },
-      {
-          "Titulo": "Libro 16",
-          "Autor": "Autor 16",
-          "Genero": "Ciencia",
-          "AñoPublicacion": 2017,
-          "Editorial": "Editorial 16",
-          "ISBN": "978-6789012345",
-          "Paginas": 360,
-          "Idioma": "Español",
-          "Formato": "Tapa dura",
-          "Precio": 29.75
-      },
-      {
-          "Titulo": "Libro 17",
-          "Autor": "Autor 17",
-          "Genero": "Ficción",
-          "AñoPublicacion": 2016,
-          "Editorial": "Editorial 17",
-          "ISBN": "978-7890123456",
-          "Paginas": 280,
-          "Idioma": "Inglés",
-          "Formato": "Tapa blanda",
-          "Precio": 20.50
-      },
-      {
-          "Titulo": "Libro 18",
-          "Autor": "Autor 18",
-          "Genero": "Misterio",
-          "AñoPublicacion": 2022,
-          "Editorial": "Editorial 18",
-          "ISBN": "978-8901234567",
-          "Paginas": 310,
-          "Idioma": "Español",
-          "Formato": "Tapa dura",
-          "Precio": 27.99
-      },
-      {
-          "Titulo": "Libro 19",
-          "Autor": "Autor 19",
-          "Genero": "Fantasía",
-          "AñoPublicacion": 2020,
-          "Editorial": "Editorial 19",
-          "ISBN": "978-9012345678",
-          "Paginas": 330,
-          "Idioma": "Inglés",
-          "Formato": "Tapa blanda",
-          "Precio": 23.75
-      },
-      {
-          "Titulo": "Libro 20",
-          "Autor": "Autor 20",
-          "Genero": "Historia",
-          "AñoPublicacion": 2023,
-          "Editorial": "Editorial 20",
-          "ISBN": "978-0123456789",
-          "Paginas": 300,
-          "Idioma": "Español",
-          "Formato": "Tapa dura",
-          "Precio": 26.99
-      },
-    {
-          "Titulo": "Libro 21",
-          "Autor": "Autor 21",
-          "Genero": "Aventura",
-          "AñoPublicacion": 2022,
-          "Editorial": "Editorial 21",
-          "ISBN": "978-0987654321",
-          "Paginas": 290,
-          "Idioma": "Español",
-          "Formato": "Tapa blanda",
-          "Precio": 22.99
-      },
-      {
-          "Titulo": "Libro 22",
-          "Autor": "Autor 22",
-          "Genero": "Romance",
-          "AñoPublicacion": 2021,
-          "Editorial": "Editorial 22",
-          "ISBN": "978-9876543210",
-          "Paginas": 330,
-          "Idioma": "Inglés",
-          "Formato": "Tapa dura",
-          "Precio": 26.75
-      },
-      {
-          "Titulo": "Libro 23",
-          "Autor": "Autor 23",
-          "Genero": "Ciencia",
-          "AñoPublicacion": 2019,
-          "Editorial": "Editorial 23",
-          "ISBN": "978-2345678901",
-          "Paginas": 320,
-          "Idioma": "Español",
-          "Formato": "Tapa dura",
-          "Precio": 21.99
-      },
-      {
-          "Titulo": "Libro 24",
-          "Autor": "Autor 24",
-          "Genero": "Ficción",
-          "AñoPublicacion": 2020,
-          "Editorial": "Editorial 24",
-          "ISBN": "978-7654321098",
-          "Paginas": 280,
-          "Idioma": "Inglés",
-          "Formato": "Tapa blanda",
-          "Precio": 23.50
-      },
-      {
-          "Titulo": "Libro 25",
-          "Autor": "Autor 25",
-          "Genero": "Misterio",
-          "AñoPublicacion": 2018,
-          "Editorial": "Editorial 25",
-          "ISBN": "978-3456789012",
-          "Paginas": 310,
-          "Idioma": "Español",
-          "Formato": "Tapa blanda",
-          "Precio": 24.50
-      },
-      {
-          "Titulo": "Libro 26",
-          "Autor": "Autor 26",
-          "Genero": "Fantasía",
-          "AñoPublicacion": 2023,
-          "Editorial": "Editorial 26",
-          "ISBN": "978-4567890123",
-          "Paginas": 340,
-          "Idioma": "Inglés",
-          "Formato": "Tapa dura",
-          "Precio": 21.99
-      },
-      {
-          "Titulo": "Libro 27",
-          "Autor": "Autor 27",
-          "Genero": "Historia",
-          "AñoPublicacion": 2017,
-          "Editorial": "Editorial 27",
-          "ISBN": "978-5678901234",
-          "Paginas": 360,
-          "Idioma": "Español",
-          "Formato": "Tapa dura",
-          "Precio": 29.75
-      },
-      {
-          "Titulo": "Libro 28",
-          "Autor": "Autor 28",
-          "Genero": "Aventura",
-          "AñoPublicacion": 2019,
-          "Editorial": "Editorial 28",
-          "ISBN": "978-6789012345",
-          "Paginas": 280,
-          "Idioma": "Inglés",
-          "Formato": "Tapa blanda",
-          "Precio": 20.50
-      },
-      {
-          "Titulo": "Libro 29",
-          "Autor": "Autor 29",
-          "Genero": "Romance",
-          "AñoPublicacion": 2022,
-          "Editorial": "Editorial 29",
-          "ISBN": "978-8901234567",
-          "Paginas": 310,
-          "Idioma": "Español",
-          "Formato": "Tapa dura",
-          "Precio": 27.99
-      },
-      {
-          "Titulo": "Libro 30",
-          "Autor": "Autor 30",
-          "Genero": "Ciencia",
-          "AñoPublicacion": 2020,
-          "Editorial": "Editorial 30",
-          "ISBN": "978-9012345678",
-          "Paginas": 330,
-          "Idioma": "Inglés",
-          "Formato": "Tapa blanda",
-          "Precio": 23.75
-      }
-    ];
-
+  // Hidden shortcut to auto-fill with a sample JSON
   useEffect(() => {
-    const fillJsonShortcut = (e) => {
+    const fillSample = (e) => {
       if (e.ctrlKey && e.shiftKey && e.code === 'KeyS') {
         e.preventDefault();
-        setJsonInput(JSON.stringify(jsonTest, null, 2));
+        setJsonInput(JSON.stringify(sampleJson, null, 2));
       }
     };
-
-    window.addEventListener('keydown', fillJsonShortcut);
-
-    return () => {
-      window.removeEventListener('keydown', fillJsonShortcut);
-    };
-  }, [jsonTest]);
+    window.addEventListener('keydown', fillSample);
+    return () => window.removeEventListener('keydown', fillSample);
+  }, [setJsonInput]);
 
   return (
-    <div className="flex flex-col h-30 md:h-screen bg-slate-400/10 p-4 gap-5 overflow-hidden">
+    <div className="flex flex-col h-full rounded-2xl border border-slate-700 bg-gradient-to-b from-slate-900/60 to-slate-900/30 backdrop-blur p-4 md:p-5 gap-4 shadow-lg">
+      <div className="flex flex-col">
+        <p className="text-xs text-slate-400 uppercase tracking-[0.18em]">Entrada JSON</p>
+        <h3 className="text-lg font-semibold text-slate-50 leading-tight">Pega o escribe tu JSON aquí</h3>
+      </div>
       <textarea
-        className="md:h-5/6 h-1/6 bg-white/10 border text-slate-100 border-gray-500 p-2 resize-none scrollbar scrollbar-thumb-teal-700 scrollbar-track-slate-700"
+        className="h-64 md:h-[420px] bg-slate-950/50 border border-slate-700 focus:border-teal-400 focus:ring-2 focus:ring-teal-400/30 outline-none text-slate-100 p-3 rounded-xl resize-none font-mono text-sm leading-6 scrollbar scrollbar-thumb-teal-700 scrollbar-track-slate-800"
         value={jsonInput}
         onChange={(e) => setJsonInput(e.target.value)}
-        placeholder="Introduce tu JSON aquí."
-      >
-      </textarea>
-      <button
-        className="bg-teal-600 hover:bg-teal-700 text-slate-100 font-bold py-2 md:py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-sm l:text-base"
-        onClick={handleSubmit}
-      >
-        Procesar JSON <FontAwesomeIcon icon={faPlay} className="w-5 h-5 md:w-5 md:h-5"/>
-      </button>
-      
+        placeholder="Introduce tu JSON aqui..."
+      ></textarea>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <button
+          className="bg-teal-500 hover:bg-teal-400 text-slate-900 font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-sm transition-colors"
+          onClick={handleSubmit}
+          type="button"
+        >
+          Procesar JSON <FontAwesomeIcon icon={faPlay} className="w-4 h-4" />
+        </button>
+        <div className="text-xs text-slate-400 flex items-center justify-center bg-slate-900/40 border border-dashed border-slate-700 rounded-xl px-3 py-2">
+          Pega un JSON válido para comenzar
+        </div>
+      </div>
     </div>
-    
   );
 }
