@@ -8,19 +8,16 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Usar Node.js 18.x
-      uses: actions/setup-node@v3
+    - uses: actions/checkout@v4
+
+    - name: Usar Node.js 24.12.x
+      uses: actions/setup-node@v4
       with:
-        node-version: 18.x
+        node-version: '24.12.x'
         cache: 'npm'
-    - name: Cachear node_modules
-      uses: actions/cache@v3
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+
+    - name: Verificar versión de Node
+      run: node -v
   
   Build:
     runs-on: self-hosted
@@ -29,11 +26,13 @@ jobs:
     steps:
     - name: Ejecutar "npm ci"
       run: npm ci 
+
     - name: Hacer build
       run: npm run build --if-present
       env:
         NEXT_PUBLIC_API_ENDPOINT: ${{ secrets.NEXT_PUBLIC_API_ENDPOINT }}
         NEXT_PUBLIC_API_KEY: ${{ secrets.NEXT_PUBLIC_API_KEY }}
+
   Deploy:
     runs-on: self-hosted
     needs: Build
