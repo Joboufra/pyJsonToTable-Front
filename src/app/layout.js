@@ -4,7 +4,7 @@ import './globals.css'
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'pyJsonToTable',
+  title: 'JsonToTable | Jose Boullosa',
   description: 'Convierte tu JSON a formato tabla',
 }
 
