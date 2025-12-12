@@ -46,8 +46,5 @@ jobs:
     runs-on: self-hosted
     needs: Build
     steps:
-    - name: Verificar versión de Node
-      run: node -v
-
     - name: Volver a desplegar
       run: pm2 reload 1
