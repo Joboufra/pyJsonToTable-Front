@@ -1,17 +1,17 @@
-import { Inter } from 'next/font/google'
+import { Space_Grotesk } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+const spaceGrotesk = Space_Grotesk({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'pyJsonToTable',
+  title: 'JsonToTable | Jose Boullosa',
   description: 'Convierte tu JSON a formato tabla',
 }
 
 export default function RootLayout({ children }) {
   return (
     <html lang="es">
-      <body className={inter.className}>{children}</body>
+      <body className={spaceGrotesk.className}>{children}</body>
     </html>
   )
 }
