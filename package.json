@@ -1,6 +1,6 @@
 {
   "name": "jsonToTable",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -14,17 +14,20 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "framer-motion": "^10.16.5",
     "jsonToTable": "file:",
-    "next": "14.0.3",
+    "next": "16.0.10",
     "react": "^18",
     "react-dom": "^18",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.0.3",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "16.0.10",
     "postcss": "^8",
     "tailwind-scrollbar": "^3.0.5",
     "tailwindcss": "^3.3.0"
+  },
+  "engines": {
+    "node": ">=20.9.0"
   }
 }
