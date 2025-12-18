@@ -20,18 +20,19 @@ export default function Home() {
   const [modalContent, setModalContent] = useState('');
   const [showNoResultsMessage, setShowNoResultsMessage] = useState(false);
   const [tableColumns, setTableColumns] = useState([]);
+  const [isFilterActive, setIsFilterActive] = useState(false);
+
+  const getColumnNamesFromHtml = (html) => {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    const headers = tempDiv.querySelectorAll('table tr th');
+    return Array.from(headers).map((header) => header.textContent.trim());
+  };
 
   useEffect(() => {
-    const extractColumnNames = () => {
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = tableHtml;
-      const headers = tempDiv.querySelectorAll('table tr th');
-      return Array.from(headers).map((header) => header.textContent.trim());
-    };
-
     if (tableHtml) {
       console.log('Tabla actualizada, se modifican los filtros.');
-      setTableColumns(extractColumnNames());
+      setTableColumns(getColumnNamesFromHtml(tableHtml));
     } else {
       setTableColumns([]);
     }
@@ -130,6 +131,7 @@ export default function Home() {
       const styledTableHtml = addStylesToTable(jsonResponse.html);
       setTableHtml(styledTableHtml);
       setFilteredTableHtml(styledTableHtml);
+      setIsFilterActive(false);
     } catch (error) {
       console.error('Error en la solicitud o en el analisis del JSON');
       handleJsonError(error);
@@ -174,44 +176,86 @@ export default function Home() {
     return tempDiv.innerHTML;
   };
 
+  const buildTableHtml = (headers, rows) => {
+    const table = document.createElement('table');
+    table.className = 'min-w-full text-sm text-slate-100';
+
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    headers.forEach((header) => {
+      const th = document.createElement('th');
+      th.textContent = (header || '').toString().trim().toUpperCase();
+      th.className =
+        'text-center text-xs font-semibold text-teal-100 bg-slate-900/80 uppercase tracking-[0.16em] border-b border-slate-700 px-3 py-3 sticky top-0';
+      headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    rows.forEach((row, idx) => {
+      const tr = document.createElement('tr');
+      const rowBg = idx % 2 === 0 ? 'rgba(15,23,42,0.55)' : 'rgba(12,18,31,0.55)';
+      tr.style.backgroundColor = rowBg;
+      tr.style.setProperty('background', rowBg, 'important');
+
+      row.forEach((cell) => {
+        const td = document.createElement('td');
+        td.textContent = (cell ?? '').toString().trim();
+        td.className = 'whitespace-nowrap text-center border-b border-slate-800 px-3 py-2 text-slate-100';
+        td.style.backgroundColor = rowBg;
+        td.style.setProperty('background', rowBg, 'important');
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+
+    return table.outerHTML;
+  };
+
+  const normalizeText = (value) =>
+    (value || '')
+      .toString()
+      .trim()
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+  const normalizeColumn = (value) => normalizeText(value).replace(/\s+/g, ' ');
+
   const handleSearch = (searchTerm, selectedColumn) => {
-    const term = (searchTerm || '').trim();
+    const term = normalizeText(searchTerm);
     if (!tableHtml) return;
 
     if (!term) {
       setFilteredTableHtml(tableHtml);
       setShowNoResultsMessage(false);
+      setIsFilterActive(false);
       return;
     }
 
-    const columnsToUse =
-      selectedColumn && selectedColumn !== 'all'
-        ? [selectedColumn]
-        : tableColumns;
+    setIsFilterActive(true);
 
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = tableHtml;
-    const rows = tempDiv.querySelectorAll('table tr');
-    let visibleRows = 0;
+    const headers = tableColumns.length ? tableColumns : getColumnNamesFromHtml(tableHtml);
+    const normalizedSelected = normalizeColumn(selectedColumn || 'all');
+    const normalizedHeaders = headers.map((header) => normalizeColumn(header));
+    const selectedIndex = normalizedHeaders.indexOf(normalizedSelected);
+    const useAllCells = normalizedSelected === 'all' || selectedIndex === -1;
 
-    rows.forEach((row, rowIndex) => {
-      if (rowIndex === 0) return;
-      const cells = row.querySelectorAll('td');
-      if (cells.length > 0) {
-        const headerCells = row.parentNode.rows[0].cells;
-        const isMatch = Array.from(cells).some((cell, index) => {
-          if (index >= headerCells.length) return false;
-          const columnName = headerCells[index].textContent.trim();
-          const columnAllowed = columnsToUse.length === 0 || columnsToUse.includes(columnName);
-          return columnAllowed && cell.textContent.toLowerCase().includes(term.toLowerCase());
-        });
-        row.style.display = isMatch ? '' : 'none';
-        if (isMatch) visibleRows++;
+    const dataRows = convertTableHtmlToData(tableHtml);
+    const matchedRows = dataRows.filter((row) => {
+      if (useAllCells) {
+        return row.some((cell) => normalizeText(cell).includes(term));
       }
+      const cell = row[selectedIndex];
+      return cell !== undefined && normalizeText(cell).includes(term);
     });
 
+    const visibleRows = matchedRows.length;
+    const filteredHtml = buildTableHtml(headers, matchedRows);
+
     console.log('Filas que coinciden con la busqueda:', visibleRows);
-    setFilteredTableHtml(tempDiv.innerHTML);
+    setFilteredTableHtml(filteredHtml);
     setShowNoResultsMessage(visibleRows === 0);
   };
 
@@ -221,6 +265,7 @@ export default function Home() {
     setFilteredTableHtml('');
     setTableColumns([]);
     setShowNoResultsMessage(false);
+    setIsFilterActive(false);
   };
 
   const handleOpenAboutModal = () => {
@@ -290,7 +335,11 @@ export default function Home() {
                     transition={{ duration: 0.25 }}
                     className="h-full w-full"
                   >
-                    <HtmlTable tableHtml={filteredTableHtml || tableHtml} />
+                    <HtmlTable
+                      tableHtml={tableHtml}
+                      visibleTableHtml={filteredTableHtml || tableHtml}
+                      showCopySelection={isFilterActive}
+                    />
                   </motion.div>
                 )}
               </motion.div>
