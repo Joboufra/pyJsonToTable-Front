@@ -7,7 +7,7 @@ import HtmlTable from './components/htmlTable';
 import Modal from './components/modal';
 import NavBar from './components/Navbar';
 import Welcome from './components/Welcome';
-import JSZip from 'jszip';
+import * as XLSX from '@e965/xlsx';
 
 export default function Home() {
   const [jsonInput, setJsonInput] = useState('');
@@ -83,99 +83,12 @@ export default function Home() {
     document.body.removeChild(link);
   }
 
-  function escapeXml(text) {
-    return text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&apos;');
-  }
+  function exportToExcel(data, filename = 'JsonToTable.xlsx') {
+    const worksheet = XLSX.utils.aoa_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'JsonToTable - Joboufra');
 
-  async function exportToExcel(data, filename = 'JsonToTable.xlsx') {
-    const zip = new JSZip();
-
-    const sharedStrings = [];
-    const stringIndex = new Map();
-
-    function getSstIndex(text) {
-      const key = text;
-      if (stringIndex.has(key)) return stringIndex.get(key);
-      const index = sharedStrings.length;
-      sharedStrings.push(key);
-      stringIndex.set(key, index);
-      return index;
-    }
-
-    let rowsXml = '';
-    data.forEach((row, rowIndex) => {
-      const r = rowIndex + 1;
-      let cells = '';
-      row.forEach((cell, colIndex) => {
-        const colLetter = String.fromCharCode(65 + colIndex);
-        const text = cell ?? '';
-        if (text) {
-          const sstIdx = getSstIndex(text);
-          cells += `<c r="${colLetter}${r}" t="s"><v>${sstIdx}</v></c>`;
-        } else {
-          cells += `<c r="${colLetter}${r}"/>`;
-        }
-      });
-      rowsXml += `<row r="${r}">${cells}</row>`;
-    });
-
-    const sstXml = sharedStrings.map((s) => `<si><t>${escapeXml(s)}</t></si>`).join('');
-
-    zip.file('[Content_Types].xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
-  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
-  <Default Extension="xml" ContentType="application/xml"/>
-  <Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
-  <Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
-  <Override PartName="/xl/sharedStrings.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml"/>
-</Types>`);
-
-    zip.file('_rels/.rels', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>
-</Relationships>`);
-
-    zip.file('xl/_rels/workbook.xml.rels', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>
-  <Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings" Target="sharedStrings.xml"/>
-</Relationships>`);
-
-    zip.file('xl/workbook.xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
-  <sheets>
-    <sheet name="JsonToTable - Joboufra" sheetId="1" r:id="rId1"/>
-  </sheets>
-</workbook>`);
-
-    const colCount = data.length > 0 ? Math.max(...data.map((r) => r.length)) : 1;
-    const colRef = String.fromCharCode(64 + colCount);
-
-    zip.file('xl/worksheets/sheet1.xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
-  <sheetData>${rowsXml}</sheetData>
-  <dimension ref="A1:${colRef}${data.length}"/>
-</worksheet>`);
-
-    zip.file('xl/sharedStrings.xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<sst xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" count="${sharedStrings.length}" uniqueCount="${sharedStrings.length}">
-  ${sstXml}
-</sst>`);
-
-    const blob = await zip.generateAsync({ type: 'blob', mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    XLSX.writeFile(workbook, filename);
   }
 
   const handleExport = (format) => {
