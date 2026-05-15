@@ -7,7 +7,7 @@ import HtmlTable from './components/htmlTable';
 import Modal from './components/modal';
 import NavBar from './components/Navbar';
 import Welcome from './components/Welcome';
-import * as XLSX from 'xlsx';
+import * as XLSX from '@e965/xlsx';
 
 export default function Home() {
   const [jsonInput, setJsonInput] = useState('');
